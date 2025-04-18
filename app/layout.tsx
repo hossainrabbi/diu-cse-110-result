@@ -8,6 +8,7 @@ import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
+import { getResults } from "./(root)/page";
 
 export const metadata: Metadata = {
   title: {
@@ -27,11 +28,13 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const result = await getResults();
+
   return (
     <html suppressHydrationWarning lang="en">
       <head />
@@ -43,7 +46,7 @@ export default function RootLayout({
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="relative flex flex-col h-screen">
-            <Navbar />
+            <Navbar result={result?.data} />
             <main className="container mx-auto max-w-7xl px-6 flex-grow">
               {children}
             </main>

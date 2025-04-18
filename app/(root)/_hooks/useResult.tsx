@@ -1,5 +1,9 @@
 import { ResultType } from "@/types";
-import { ordinalData } from "@/utils/utils";
+import {
+  ordinalData,
+  sortByAverageCgpa,
+  sortBySemesterCgpa,
+} from "@/utils/utils";
 import { User } from "@heroui/user";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -7,6 +11,7 @@ import { useCallback, useEffect, useState } from "react";
 export default function useResult(result: ResultType[] = []) {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
+  const sortQuery = searchParams.get("sort") || "";
   const [resultList, setResultList] = useState(result);
 
   useEffect(() => {
@@ -17,6 +22,17 @@ export default function useResult(result: ResultType[] = []) {
     );
     setResultList(searchResult);
   }, [searchQuery, result]);
+
+  useEffect(() => {
+    if (sortQuery === "average") {
+      setResultList(sortByAverageCgpa(result));
+    } else if (sortQuery.startsWith("semester-")) {
+      const semesterNumber = sortQuery.split("-")[1];
+      setResultList(sortBySemesterCgpa(result, semesterNumber));
+    } else {
+      setResultList(result);
+    }
+  }, [sortQuery, result]);
 
   const semesterList =
     resultList?.[0]?.result?.semesters?.map((item) => ({

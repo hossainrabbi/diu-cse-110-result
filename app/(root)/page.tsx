@@ -11,7 +11,7 @@ export default async function Home() {
   );
 }
 
-async function getResults() {
+export async function getResults() {
   const header = await headers();
   const host = header.get("host");
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
