@@ -1,5 +1,6 @@
 import { ResultType } from "@/types";
 import {
+  addZeroIfInRange,
   ordinalData,
   sortByAverageCgpa,
   sortBySemesterCgpa,
@@ -43,48 +44,70 @@ export default function useResult(result: ResultType[] = []) {
 
   // Constants
   const columns: any[] = [
-    { name: "ROLL", uid: "roll", align: "center" },
     { name: "NAME", uid: "name" },
+    { name: "ROLL", uid: "roll", align: "center" },
     ...semesterList,
     { name: "AVERAGE CGPA", uid: "average", align: "center" },
     { name: "AVERAGE GRADE", uid: "grade", align: "center" },
   ];
 
+  if (sortQuery) {
+    columns.splice(0, 0, { name: "SL", uid: "sl", align: "center" });
+  }
+
   // Render table
-  const renderCell = useCallback((user: ResultType, columnKey: string) => {
-    if (columnKey === "roll") {
-      return <div>{user?.roll}</div>;
-    }
+  const renderCell = useCallback(
+    (user: ResultType, columnKey: string, index?: number) => {
+      if (columnKey === "sl") {
+        return index !== undefined ? addZeroIfInRange(index) : "-";
+      }
 
-    if (columnKey === "name") {
-      return (
-        <User
-          avatarProps={{ radius: "lg", src: user?.image }}
-          description={`REG: ${user?.reg}`}
-          name={user?.name}
-        />
+      if (columnKey === "roll") {
+        return <div>{user?.roll}</div>;
+      }
+
+      if (columnKey === "name") {
+        return (
+          <User
+            avatarProps={{ radius: "lg", src: user?.image }}
+            description={
+              <div>
+                REG: ${user?.reg}
+                {index && index <= 3 && (
+                  <img
+                    src="/top.png"
+                    className="absolute left-6 -bottom-1 size-5"
+                  />
+                )}
+              </div>
+            }
+            name={user?.name}
+            className="relative"
+          />
+        );
+      }
+
+      if (columnKey === "average") {
+        return user?.result?.cgpa === "Incomplete" ? "-" : user?.result?.cgpa;
+      }
+
+      if (columnKey === "grade") {
+        return user?.result?.grade === "Incomplete" ? "-" : user?.result?.grade;
+      }
+
+      // Dynamic semester columns
+      const semester = user?.result?.semesters?.find(
+        (s) => String(s.semester) === columnKey
       );
-    }
 
-    if (columnKey === "average") {
-      return user?.result?.cgpa === "Incomplete" ? "-" : user?.result?.cgpa;
-    }
+      if (semester) {
+        return semester.cgpa || "-";
+      }
 
-    if (columnKey === "grade") {
-      return user?.result?.grade === "Incomplete" ? "-" : user?.result?.grade;
-    }
-
-    // Dynamic semester columns
-    const semester = user?.result?.semesters?.find(
-      (s) => String(s.semester) === columnKey
-    );
-
-    if (semester) {
-      return semester.cgpa || "-";
-    }
-
-    return "-";
-  }, []);
+      return "-";
+    },
+    []
+  );
 
   const sortValue = sortQuery.startsWith("semester-")
     ? sortQuery.split("-")[1]

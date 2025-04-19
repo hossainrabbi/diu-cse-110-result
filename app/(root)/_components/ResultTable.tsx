@@ -27,8 +27,17 @@ interface UserType {
   grade: string;
 }
 
+type ResultTypeWithIndex = ResultType & {
+  index?: number;
+};
+
 export default function ResultTable({ result }: { result: ResultType[] }) {
   const { resultList, columns, renderCell, sortValue } = useResult(result);
+
+  const resultListWithIndex = resultList.map((item, index) => ({
+    ...item,
+    index: sortValue ? index + 1 : undefined,
+  }));
 
   return (
     <Table aria-label="Example table with custom cells">
@@ -44,12 +53,12 @@ export default function ResultTable({ result }: { result: ResultType[] }) {
         )}
       </TableHeader>
 
-      <TableBody items={resultList} emptyContent={<EmptyTable />}>
-        {(item: ResultType) => (
+      <TableBody items={resultListWithIndex} emptyContent={<EmptyTable />}>
+        {(item: ResultTypeWithIndex) => (
           <TableRow key={item?._id}>
             {(columnKey: any) => (
               <TableCell>
-                {renderCell(item, columnKey as Column["uid"])}
+                {renderCell(item, columnKey as Column["uid"], item?.index)}
               </TableCell>
             )}
           </TableRow>

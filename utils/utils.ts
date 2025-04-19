@@ -4,11 +4,11 @@ export const ordinalData = {
   "1": "1ST SEMESTER",
   "2": "2ND SEMESTER",
   "3": "3RD SEMESTER",
-  "4": "4th",
-  "5": "5th",
-  "6": "6th",
-  "7": "7th",
-  "8": "8th",
+  "4": "4TH SEMESTER",
+  "5": "5TH SEMESTER",
+  "6": "6TH SEMESTER",
+  "7": "7TH SEMESTER",
+  "8": "8TH SEMESTER",
 };
 
 export const getSortList = (data: ResultType[]) => {
@@ -61,3 +61,11 @@ export function sortBySemesterCgpa(
     return cgpaB - cgpaA;
   });
 }
+
+export const addZeroIfInRange = (num: number) => {
+  if (num < 10 && num > -10) {
+    return num < 10 && num >= 0 ? `0${num}` : `-0${Math.abs(num)}`;
+  }
+
+  return num;
+};
