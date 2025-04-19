@@ -28,13 +28,17 @@ interface UserType {
 }
 
 export default function ResultTable({ result }: { result: ResultType[] }) {
-  const { resultList, columns, renderCell } = useResult(result);
+  const { resultList, columns, renderCell, sortValue } = useResult(result);
 
   return (
     <Table aria-label="Example table with custom cells">
       <TableHeader columns={columns}>
         {(column: Column) => (
-          <TableColumn key={column?.uid} align={column.align || "start"}>
+          <TableColumn
+            className={column?.uid === sortValue ? "bg-default-200" : ""}
+            key={column?.uid}
+            align={column.align || "start"}
+          >
             {column?.name}
           </TableColumn>
         )}

@@ -46,7 +46,7 @@ export default function useResult(result: ResultType[] = []) {
     { name: "ROLL", uid: "roll", align: "center" },
     { name: "NAME", uid: "name" },
     ...semesterList,
-    { name: "AVERAGE CGPA", uid: "cgpa", align: "center" },
+    { name: "AVERAGE CGPA", uid: "average", align: "center" },
     { name: "AVERAGE GRADE", uid: "grade", align: "center" },
   ];
 
@@ -66,7 +66,7 @@ export default function useResult(result: ResultType[] = []) {
       );
     }
 
-    if (columnKey === "cgpa") {
+    if (columnKey === "average") {
       return user?.result?.cgpa === "Incomplete" ? "-" : user?.result?.cgpa;
     }
 
@@ -86,9 +86,14 @@ export default function useResult(result: ResultType[] = []) {
     return "-";
   }, []);
 
+  const sortValue = sortQuery.startsWith("semester-")
+    ? sortQuery.split("-")[1]
+    : sortQuery;
+
   return {
     resultList,
     columns,
     renderCell,
+    sortValue,
   };
 }
