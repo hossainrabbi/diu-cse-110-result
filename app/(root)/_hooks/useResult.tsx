@@ -16,28 +16,28 @@ export default function useResult(result: ResultType[] = []) {
   const sortQuery = searchParams.get("sort") || "";
   const [resultList, setResultList] = useState(result);
 
-  // useEffect(() => {
-  //   const searchResult = result.filter(
-  //     (r) =>
-  //       r.name.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-  //       r.reg.toLowerCase().includes(searchQuery?.toLowerCase())
-  //   );
-
-  //   setResultList(searchResult);
-  // }, [searchQuery, result]);
-
-  // console.log(resultList);
-
   useEffect(() => {
+    let filteredResult = result;
+
+    // Search filter
+    if (searchQuery) {
+      filteredResult = filteredResult.filter(
+        (r) =>
+          r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          r.roll.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Sort logic
     if (sortQuery === "average") {
-      setResultList(sortByAverageCgpa(result));
+      filteredResult = sortByAverageCgpa(filteredResult);
     } else if (sortQuery.startsWith("semester-")) {
       const semesterNumber = sortQuery.split("-")[1];
-      setResultList(sortBySemesterCgpa(result, semesterNumber));
-    } else {
-      setResultList(result);
+      filteredResult = sortBySemesterCgpa(filteredResult, semesterNumber);
     }
-  }, [sortQuery, result]);
+
+    setResultList(filteredResult);
+  }, [searchQuery, sortQuery, result]);
 
   const semesterList =
     resultList?.[0]?.result?.semesters?.map((item) => ({
