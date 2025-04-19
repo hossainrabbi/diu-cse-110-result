@@ -5,6 +5,7 @@ import {
   sortByAverageCgpa,
   sortBySemesterCgpa,
 } from "@/utils/utils";
+import { Chip } from "@heroui/chip";
 import { User } from "@heroui/user";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -58,9 +59,13 @@ export default function useResult(result: ResultType[] = []) {
     columns.splice(0, 0, { name: "SL", uid: "sl", align: "center" });
   }
 
+  const sortValue = sortQuery.startsWith("semester-")
+    ? sortQuery.split("-")[1]
+    : sortQuery;
+
   // Render table
   const renderCell = useCallback(
-    (user: ResultType, columnKey: string, index?: number) => {
+    (user: ResultType, columnKey: string, index?: number, active?: string) => {
       if (columnKey === "sl") {
         return index !== undefined ? addZeroIfInRange(index) : "-";
       }
@@ -93,7 +98,17 @@ export default function useResult(result: ResultType[] = []) {
       }
 
       if (columnKey === "average") {
-        return user?.result?.cgpa === "Incomplete" ? "-" : user?.result?.cgpa;
+        return user?.result?.cgpa === "Incomplete" ? (
+          "-"
+        ) : (
+          <Chip
+            size="sm"
+            color={active === "average" ? "success" : undefined}
+            variant="flat"
+          >
+            {user?.result?.cgpa}
+          </Chip>
+        );
       }
 
       if (columnKey === "grade") {
@@ -106,17 +121,23 @@ export default function useResult(result: ResultType[] = []) {
       );
 
       if (semester) {
-        return semester.cgpa || "-";
+        return semester.cgpa ? (
+          <Chip
+            size="sm"
+            color={active === semester?.semester ? "success" : undefined}
+            variant="flat"
+          >
+            {semester.cgpa}
+          </Chip>
+        ) : (
+          "-"
+        );
       }
 
       return "-";
     },
     []
   );
-
-  const sortValue = sortQuery.startsWith("semester-")
-    ? sortQuery.split("-")[1]
-    : sortQuery;
 
   return {
     resultList,

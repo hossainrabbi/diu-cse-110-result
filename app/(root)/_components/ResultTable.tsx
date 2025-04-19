@@ -58,7 +58,12 @@ export default function ResultTable({ result }: { result: ResultType[] }) {
           <TableRow key={item?._id}>
             {(columnKey: any) => (
               <TableCell>
-                {renderCell(item, columnKey as Column["uid"], item?.index)}
+                {renderCell(
+                  item,
+                  columnKey as Column["uid"],
+                  item?.index,
+                  sortValue
+                )}
               </TableCell>
             )}
           </TableRow>

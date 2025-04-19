@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .select-hover:hover .clear-icon {
-  @apply inline-block bg-default-200 transition-colors duration-[10ms];
+  @apply bg-default-200 transition-colors duration-[10ms];
 }

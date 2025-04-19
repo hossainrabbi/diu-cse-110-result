@@ -92,7 +92,7 @@ export const Navbar = ({ result }: { result: ResultType[] }) => {
             </Select>
             {sortQuery && (
               <button
-                className="absolute right-2 top-2 z-10 text-gray-500 hover:text-red-500 bg-default-100 hover:!bg-default-100 hidden clear-icon"
+                className="absolute right-2 top-2 z-10 text-white hover:text-red-500 bg-default-100 hover:!bg-default-100 clear-icon"
                 onClick={handleClearSelect}
               >
                 <ClearIcon />
