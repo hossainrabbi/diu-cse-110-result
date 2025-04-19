@@ -55,7 +55,10 @@ export default function ResultTable({ result }: { result: ResultType[] }) {
 
       <TableBody items={resultListWithIndex} emptyContent={<EmptyTable />}>
         {(item: ResultTypeWithIndex) => (
-          <TableRow key={item?._id}>
+          <TableRow
+            className="border-b border-default-200 dark:border-default-100"
+            key={item?._id}
+          >
             {(columnKey: any) => (
               <TableCell>
                 {renderCell(

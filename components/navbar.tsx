@@ -67,18 +67,13 @@ export const Navbar = ({ result }: { result: ResultType[] }) => {
     <Input
       aria-label="Search"
       classNames={{
-        inputWrapper: "bg-default-100",
+        inputWrapper: "bg-default-100 px-2 md:px-3",
         input: "text-sm",
       }}
-      // endContent={
-      //   <Kbd className="hidden lg:inline-block" keys={["command"]}>
-      //     K
-      //   </Kbd>
-      // }
       labelPlacement="outside"
       placeholder="Search by name or roll"
       startContent={
-        <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
+        <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0 hidden md:inline-block" />
       }
       type="search"
       className="w-36 md:w-52"
@@ -89,12 +84,12 @@ export const Navbar = ({ result }: { result: ResultType[] }) => {
 
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
-      <NavbarContent className="basis-full" justify="start">
+      <NavbarContent className="basis-full gap-1.5 md:gap-4" justify="start">
         <NavbarItem className="flex">{searchInput}</NavbarItem>
         <NavbarItem className="flex">
           <div className="relative select-hover">
             <Select
-              className="w-36 md:w-52"
+              className="w-[150px] md:w-52"
               items={sortList}
               labelPlacement="outside"
               placeholder="Select to Sort"
