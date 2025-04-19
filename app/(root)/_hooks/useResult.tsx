@@ -71,22 +71,24 @@ export default function useResult(result: ResultType[] = []) {
 
       if (columnKey === "name") {
         return (
-          <User
-            avatarProps={{ radius: "lg", src: user?.image }}
-            description={
-              <div>
-                REG: {user?.reg}
-                {index && index <= 3 && (
-                  <img
-                    src="/top.png"
-                    className="absolute left-6 -bottom-1 size-5"
-                  />
-                )}
-              </div>
-            }
-            name={user?.name}
-            className="relative"
-          />
+          <div className="min-w-[300px]">
+            <User
+              avatarProps={{ radius: "lg", src: user?.image }}
+              description={
+                <div>
+                  REG: {user?.reg}
+                  {index && index <= 3 && (
+                    <img
+                      src="/top.png"
+                      className="absolute left-6 -bottom-1 size-5"
+                    />
+                  )}
+                </div>
+              }
+              name={user?.name}
+              className="relative"
+            />
+          </div>
         );
       }
 
