@@ -15,14 +15,17 @@ export default function useResult(result: ResultType[] = []) {
   const sortQuery = searchParams.get("sort") || "";
   const [resultList, setResultList] = useState(result);
 
-  useEffect(() => {
-    const searchResult = result.filter(
-      (r) =>
-        r.name.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-        r.reg.toLowerCase().includes(searchQuery?.toLowerCase())
-    );
-    setResultList(searchResult);
-  }, [searchQuery, result]);
+  // useEffect(() => {
+  //   const searchResult = result.filter(
+  //     (r) =>
+  //       r.name.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+  //       r.reg.toLowerCase().includes(searchQuery?.toLowerCase())
+  //   );
+
+  //   setResultList(searchResult);
+  // }, [searchQuery, result]);
+
+  // console.log(resultList);
 
   useEffect(() => {
     if (sortQuery === "average") {
@@ -72,7 +75,7 @@ export default function useResult(result: ResultType[] = []) {
             avatarProps={{ radius: "lg", src: user?.image }}
             description={
               <div>
-                REG: ${user?.reg}
+                REG: {user?.reg}
                 {index && index <= 3 && (
                   <img
                     src="/top.png"
